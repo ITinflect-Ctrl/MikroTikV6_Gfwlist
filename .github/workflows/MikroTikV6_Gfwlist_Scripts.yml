@@ -1,0 +1,36 @@
+name: MikroTikV6_Gfwlist_Scripts
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Run every Monday at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x ./gfwlistrosv6.sh ./gfwlistdnsmasq.sh
+
+      - name: Run main script
+        run: ./gfwlistrosv6.sh
+
+      - name: Show Result directory contents (for debugging)
+        run: ls -al Result || echo "Result directory does not exist"
+
+      - name: Auto-commit new Result files to repository
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add Result/
+          git diff --staged --quiet || git commit -m "🤖 Auto update IP list - $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
