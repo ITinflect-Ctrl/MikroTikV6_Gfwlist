@@ -1,36 +1,38 @@
 name: MikroTikV6_Gfwlist_Scripts
 
 on:
-  schedule:
-    - cron: "10 0 * * *" # Run every Monday at 00:00 UTC
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
 
 permissions:
   contents: write
 
 jobs:
-  run-scripts:
+  update-gfwlist:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Make scripts executable
-        run: chmod +x ./gfwlistrosv6.sh ./gfwlistdnsmasq.sh
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-      - name: Run main script
-        run: ./gfwlistrosv6.sh
+      - name: Install dependencies
+        run: pip install tldextract
 
-      - name: Show Result directory contents (for debugging)
-        run: ls -al Result || echo "Result directory does not exist"
+      - name: Run script to update gfwlist domains
+        run: python MikroTikV6_Gfwlist.py
 
-      - name: Auto-commit new Result files to repository
+      - name: Configure git
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add Result/
-          git diff --staged --quiet || git commit -m "🤖 Auto update IP list - $(date +'%Y-%m-%d %H:%M:%S')"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push changes
+        run: |
+          git add gfwlist_sld.txt gfwlist6_domain.rsc
+          git commit -m "Auto update GFWList domains [skip ci]" || echo "No changes to commit"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
