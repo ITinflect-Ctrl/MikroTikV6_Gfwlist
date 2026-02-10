@@ -130,7 +130,7 @@ if __name__ == '__main__':
             rsc.write(f':do {{ add regexp="{regexp}" comment=Gfwlist type=FWD forward-to={fwd_ip} }} on-error={{}}\n')
         rsc.write(':delay 5s;\n')
         rsc.write('/ip dns cache flush\n')
-        rsc.write(':log info "Completed updating GFWLIST domain rules."\n')
+        rsc.write(':log info "Completed updating MikroTik v6 GFWLIST domain rules."\n')
     print(f'Successfully processed {len(dedup_domains)} domains (custom first)')
     print('Generated files: gfwlist_sld.txt, gfwlist6_domain.rsc')
     print(f'Extracted {len(dedup_domains)} domains. Saved to gfwlist_sld.txt')
