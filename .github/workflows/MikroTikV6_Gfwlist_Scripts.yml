@@ -1,9 +1,9 @@
-name: MikroTikV6_Gfwlist_Scripts
+name: MikroTikV6 Gfwlist Scripts
 
-on:
+on:                                      # 触发方式：手动 & 定时
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 3 * * *'                  # 每天3点自动触发（UTC时间）
 
 permissions:
   contents: write
@@ -12,26 +12,26 @@ jobs:
   update-gfwlist:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout repo            # 拉取代码
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Python             # 设置 Python 环境
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install dependencies     # 安装依赖
         run: pip install tldextract
 
-      - name: Run script to update gfwlist domains
+      - name: Run script to update gfwlist domains   # 执行脚本
         run: python MikroTikV6_Gfwlist.py
 
-      - name: Configure git
+      - name: Configure git            # 配置 git 信息
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit and push changes
+      - name: Commit and push changes  # 仅 main/master 分支 自动提交修改
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
           git add gfwlist_sld.txt gfwlist6_domain.rsc
