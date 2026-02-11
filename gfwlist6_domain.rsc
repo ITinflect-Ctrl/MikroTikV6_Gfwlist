@@ -1,4 +1,4 @@
-### --- Created at: 2026-02-10 15:54:08 --- ###
+### --- Created at: 2026-02-11 06:43:06 --- ###
 :log info "Starting to update MikroTik v6 GFWLIST domain rules..."
 /ip dns static remove [find comment=Gfwlist]
 /ip dns static
@@ -4081,4 +4081,4 @@
 :do { add regexp="(\\.|^)zzcloud\\.me\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
 :delay 5s;
 /ip dns cache flush
-:log info "Completed updating GFWLIST domain rules."
+:log info "Completed updating MikroTik v6 GFWLIST domain rules."
