@@ -1323,6 +1323,7 @@ glorystar.me
 glype.com
 gmail.com
 gmgard.com
+gmgn.ai
 gmiddle.com
 gmiddle.net
 gmodules.com
@@ -3116,6 +3117,7 @@ southnews.com.tw
 sowers.org.hk
 soylent.com
 soylentnews.org
+spacex.com
 spankbang.com
 sparkpool.com
 spatial.io
@@ -3739,6 +3741,7 @@ w3s.link
 waffle1999.com
 wainao.me
 walletconnect.com
+walletconnect.org
 wallmama.com
 wallpapercasa.com
 wallsttv.com
