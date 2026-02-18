@@ -1,4 +1,4 @@
-### --- Created at: 2026-02-17 21:50:04 --- ###
+### --- Created at: 2026-02-18 21:51:59 --- ###
 :log info "Starting to update MikroTik v6 GFWLIST domain rules..."
 /ip dns static remove [find comment=Gfwlist]
 /ip dns static
@@ -2308,6 +2308,7 @@
 :do { add regexp="(\\.|^)moresci\\.sale\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
 :do { add regexp="(\\.|^)morningsun\\.org\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
 :do { add regexp="(\\.|^)mos\\.ru\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
+:do { add regexp="(\\.|^)mosavi\\.io\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
 :do { add regexp="(\\.|^)motherless\\.com\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
 :do { add regexp="(\\.|^)movements\\.org\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
 :do { add regexp="(\\.|^)moviefap\\.com\$" comment=Gfwlist type=FWD forward-to=8.8.8.8 } on-error={}
