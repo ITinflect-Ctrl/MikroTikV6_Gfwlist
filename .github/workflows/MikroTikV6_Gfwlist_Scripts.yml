@@ -3,37 +3,51 @@ name: MikroTikV6 Gfwlist Scripts
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 20 * * 3'
-    
+    - cron: '10 20 * * 3'   # 注意：这是 UTC 时间
+
 permissions:
   contents: write
+
+# 避免同一时间多次运行互相抢推送，导致 non-fast-forward
+concurrency:
+  group: mikrotikv6-gfwlist-update
+  cancel-in-progress: true
 
 jobs:
   update-gfwlist:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo              # 拉取代码
+      - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Python               # 设置 Python 环境
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install dependencies       # 安装依赖
+      - name: Install dependencies
         run: pip install tldextract
 
-      - name: Run script to update gfwlist domains   # 执行脚本
+      - name: Run script to update gfwlist domains
         run: python MikroTikV6_Gfwlist.py
 
-      - name: Configure git              # 配置 git 信息
+      - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit and push changes    # 仅 main/master 分支自动提交修改
+      - name: Commit and push changes
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
+          # 如果你的脚本输出文件名是 gfwlist6_domain.RSC（大写），把下一行改成对应大小写
           git add gfwlist_sld.txt gfwlist6_domain.rsc
-          git commit -m "Auto update GFWList domains [skip ci]" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/CodiFelix/MikroTikV6_Gfwlist.git HEAD:main
+
+          git commit -m "自动更新GFWList域名 [skip ci]" || exit 0
+
+          # 先同步远端最新提交，避免 ! [rejected] non-fast-forward（你遇到的“先取回”）
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+
+          # 推送回当前分支（main 或 master）
+          git push origin HEAD:"${GITHUB_REF_NAME}"
