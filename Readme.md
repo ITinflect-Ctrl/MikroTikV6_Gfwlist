@@ -11,7 +11,7 @@
 ### 📥 直接导入 GFWList DNS 规则
 
 ```routeros
-/tool/fetch url="https://raw.githubusercontent.com/CodiFelix/MikroTikV6_Gfwlist/main/gfwlist6_domain.rsc" mode=https dst-path=gfwlist6_domain.rsc
+/tool/fetch url="https://raw.githubusercontent.com/Codivs-Ctrl/MikroTikV6_Gfwlist/main/gfwlist6_domain.rsc" mode=https dst-path=gfwlist6_domain.rsc
 :delay 15s
 /import gfwlist6_domain.rsc
 ```
@@ -23,7 +23,7 @@
 ```routeros
 /system scheduler
 add name=update-gfwlist interval=7d start-date=2026-02-10 start-time=03:00:00 \
-on-event="/tool/fetch url=\"https://raw.githubusercontent.com/CodiFelix/MikroTikV6_Gfwlist/main/gfwlist6_domain.rsc\" mode=https dst-path=gfwlist6_domain.rsc\r\
+on-event="/tool/fetch url=\"https://raw.githubusercontent.com/Codivs-Ctrl/MikroTikV6_Gfwlist/main/gfwlist6_domain.rsc\" mode=https dst-path=gfwlist6_domain.rsc\r\
 \n:delay 15s\r\
 \n/import gfwlist6_domain.rsc\r\
 \n/log info \"GFWList rules updated successfully\""
@@ -508,8 +508,8 @@ add chain=prerouting protocol=tcp layer7-protocol=gfw-domains action=add-dst-to-
 - 分享经验：Star 项目并分享给需要的人
 
 **联系方式**：
-- GitHub Issues: [提交问题](https://github.com/CodiFelix/MikroTikV6_Gfwlist/issues)
-- Email: Codifelix@FelixBlaze.com
+- GitHub Issues: [提交问题](https://github.com/Codivs-Ctrl/MikroTikV6_Gfwlist/issues)
+- Email: Zhihong@codivs.com
 
 ---
 
@@ -528,5 +528,5 @@ Copyright (c) 2026 FelixBlaze
 **最后更新**: 2026年2月10日  
 **脚本版本**: 2.0.0  
 **测试环境**: RouterOS v6.49  
-**作者**: CodiFelix
-**仓库**: https://github.com/CodiFelix/MikroTikV6_Gfwlist
+**作者**: Codivs-Ctrl
+**仓库**: https://github.com/Codivs-Ctrl/MikroTikV6_Gfwlist
